@@ -15,6 +15,7 @@ import {
 	MediaUpload,
 	MediaUploadCheck,
 	useBlockProps,
+	RichText,
 } from "@wordpress/block-editor";
 import { Button } from "@wordpress/components";
 
@@ -36,32 +37,48 @@ const ALLOWED_MEDIA_TYPES = ["image"];
  *
  * @return {WPElement} Element to render.
  */
-export default function Edit({ attributes, setAttributes }) {
-	const { backgroundImageURL, backgroundImageID } = attributes;
+export default function Edit(props) {
+	const { attributes, setAttributes } = props;
+	const { blockTitle, backgroundImageURL, backgroundImageID } = attributes;
 	const blockStyles = {};
 	if (backgroundImageURL)
 		blockStyles.backgroundImage = `url(${backgroundImageURL})`;
 
 	return (
 		<section {...useBlockProps()} style={blockStyles}>
-			<MediaUploadCheck>
-				<MediaUpload
-					value={backgroundImageID}
-					title={__("Choose a background image", "chaos")}
-					onSelect={(media) =>
-						setAttributes({
-							backgroundImageURL: media.url,
-							backgroundImageID: media.url,
-						})
-					}
-					allowedTypes={ALLOWED_MEDIA_TYPES}
-					render={({ open }) => (
-						<Button variant="primary" onClick={open}>
-							Open Media Library
-						</Button>
-					)}
-				/>
-			</MediaUploadCheck>
+			{props.isSelected && (
+				<MediaUploadCheck>
+					<MediaUpload
+						value={backgroundImageID}
+						title={__("Choose a background image", "chaos")}
+						onSelect={(media) =>
+							setAttributes({
+								backgroundImageURL: media.url,
+								backgroundImageID: media.url,
+							})
+						}
+						allowedTypes={ALLOWED_MEDIA_TYPES}
+						render={({ open }) => (
+							<Button
+								variant="primary"
+								onClick={open}
+								className="background-image-btn"
+							>
+								{backgroundImageURL
+									? "Change Background Image"
+									: "Upload Background Image"}
+							</Button>
+						)}
+					/>
+				</MediaUploadCheck>
+			)}
+			<RichText
+				tagName="h2"
+				value={blockTitle}
+				onChange={(blockTitle) => setAttributes({ blockTitle })}
+				allowedFormats={["core/bold", "core/italic"]}
+				placeholder={__("Your title...", "chaos")}
+			/>
 		</section>
 	);
 }

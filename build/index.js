@@ -57,12 +57,13 @@ const ALLOWED_MEDIA_TYPES = ["image"];
  *
  * @return {WPElement} Element to render.
  */
-function Edit(_ref) {
-  let {
+function Edit(props) {
+  const {
     attributes,
     setAttributes
-  } = _ref;
+  } = props;
   const {
+    blockTitle,
     backgroundImageURL,
     backgroundImageID
   } = attributes;
@@ -70,7 +71,7 @@ function Edit(_ref) {
   if (backgroundImageURL) blockStyles.backgroundImage = `url(${backgroundImageURL})`;
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("section", (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)(), {
     style: blockStyles
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUpload, {
+  }), props.isSelected && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUpload, {
     value: backgroundImageID,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Choose a background image", "chaos"),
     onSelect: media => setAttributes({
@@ -78,16 +79,25 @@ function Edit(_ref) {
       backgroundImageID: media.url
     }),
     allowedTypes: ALLOWED_MEDIA_TYPES,
-    render: _ref2 => {
+    render: _ref => {
       let {
         open
-      } = _ref2;
+      } = _ref;
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
         variant: "primary",
-        onClick: open
-      }, "Open Media Library");
+        onClick: open,
+        className: "background-image-btn"
+      }, backgroundImageURL ? "Change Background Image" : "Upload Background Image");
     }
-  })));
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
+    tagName: "h2",
+    value: blockTitle,
+    onChange: blockTitle => setAttributes({
+      blockTitle
+    }),
+    allowedFormats: ["core/bold", "core/italic"],
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Your title...", "chaos")
+  }));
 }
 
 /***/ }),
@@ -247,7 +257,7 @@ function _extends() {
   \************************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"mythos/chaos","version":"0.1.0","title":"Chaos","category":"text","icon":"smiley","description":"A block containing all sorts of components for experimenting.","supports":{"html":false},"attributes":{"backgroundImageURL":{"type":"string"},"backgroundImageID":{"type":"integer"}},"textdomain":"chaos","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"mythos/chaos","version":"0.1.0","title":"Chaos","category":"text","icon":"smiley","description":"A block containing all sorts of components for experimenting.","supports":{"html":false},"attributes":{"blockTitle":{"type":"string"},"backgroundImageURL":{"type":"string"},"backgroundImageID":{"type":"integer"}},"textdomain":"chaos","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php"}');
 
 /***/ })
 

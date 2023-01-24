@@ -11,6 +11,9 @@
     "html": false
   },
   "attributes": {
+    "blockTitle": {
+      "type": "string"
+    },
     "backgroundImageURL": {
       "type": "string"
     },
